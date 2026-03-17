@@ -6,7 +6,7 @@ import os
 # CONFIGURAÇÕES — preencha os valores abaixo
 # ============================================================
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN", "COLE_SEU_TOKEN_AQUI")
-N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "https://vitorpomodoro.app.n8n.cloud/webhook/auvo-bot")
+N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "https://vitorpomodoro.app.n8n.cloud/webhook-test/auvo-bot-principal")
 CANAL_ID = int(os.getenv("CANAL_ID", "0"))  # ID do canal onde o bot vai responder
 PREFIXO = "!"  # O bot só responde mensagens que começam com ! (ex: !pergunta O que é a Auvo?)
 # ============================================================
