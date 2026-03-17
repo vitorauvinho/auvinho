@@ -63,4 +63,3 @@ async def on_message(message):
         print(f"❌ Exceção: {e}")
 
 client.run(DISCORD_TOKEN)
-```
