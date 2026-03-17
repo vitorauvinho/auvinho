@@ -64,32 +64,3 @@ async def on_message(message):
 
 client.run(DISCORD_TOKEN)
 ```
-
-### 3️⃣ Confirmar Variáveis no Railway
-
-As variáveis já estão configuradas no Railway (você me mostrou antes):
-- ✅ `DISCORD_TOKEN` 
-- ✅ `N8N_WEBHOOK_URL`
-- ✅ `CANAL_ID`
-
-Então o código vai funcionar, pegando os valores de lá!
-
-### 4️⃣ Fazer o Commit Seguro
-
-Agora sim, faça o commit no GitHub:
-1. Cole o código corrigido (sem tokens)
-2. Mensagem do commit: `"Corrige payload e remove tokens expostos"`
-3. **Clique em "Commit changes"**
-4. O GitHub não vai mais reclamar! ✅
-
-### 5️⃣ Aguardar Deploy
-
-O Railway vai detectar o commit e fazer redeploy automático (2-3 minutos).
-
----
-
-## 🧪 Depois do Deploy, Teste:
-
-No Discord:
-```
-!Quem está inadimplente?
