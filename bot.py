@@ -58,7 +58,8 @@ async def on_message(message):
                 }
             }
 
-            async with session.post(canal["n8n"], json=payload, timeout=30) as resp:
+            timeout = aiohttp.ClientTimeout(total=120)
+            async with session.post(canal["n8n"], json=payload, timeout=timeout) as resp:
                 if resp.status == 200:
                     print(f"✅ [{canal['nome']}] Pergunta enviada: {pergunta}")
                 else:
