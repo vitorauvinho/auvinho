@@ -2,14 +2,26 @@ import discord
 import aiohttp
 import os
 
-# ============================================================
-# CONFIGURAÇÕES — valores vêm das variáveis de ambiente
-# ============================================================
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL")
-CANAL_ID = int(os.getenv("CANAL_ID", "1341388033584267319"))
 PREFIXO = "!"
-# ============================================================
+
+CANAIS = {
+    1341388033584267319: {
+        "n8n": os.getenv("WEBHOOK_N8N_FINANCEIRO", "https://vitorpomodoro.app.n8n.cloud/webhook/financeiro"),
+        "discord": "https://discord.com/api/webhooks/1481657595667415274/q_U8HYZNJUS59KFG05YGls1xY9oISEKuQfHe1o6NoTYGk-uZxwhCT-3dlT65cJjdFj_B",
+        "nome": "financeiro"
+    },
+    1484613247326879947: {
+        "n8n": os.getenv("WEBHOOK_N8N_ENABLEMENT", "https://vitorpomodoro.app.n8n.cloud/webhook/enablement"),
+        "discord": "https://discord.com/api/webhooks/1484613269808349214/y_v4EQExz6Y_BevuNU77-DaLol2J6Gk5E8bCW7mDGPeK39JAyFPtFPsRA3k6nlQQ_IzM",
+        "nome": "enablement"
+    },
+    1484613476411510825: {
+        "n8n": os.getenv("WEBHOOK_N8N_ACOMPANHAMENTO", "https://vitorpomodoro.app.n8n.cloud/webhook/acompanhamento"),
+        "discord": "https://discord.com/api/webhooks/1484613495260446730/e7dmRytsqZVhMji7oKwYkJn8NRgXnIOjmc0iam3dXcVY6YSsRmTHpQ7aepgM-pbmQeTz",
+        "nome": "acompanhamento"
+    },
+}
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,28 +33,23 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # Ignora mensagens do próprio bot
     if message.author == client.user:
         return
-    
-    # Só responde no canal configurado
-    if CANAL_ID and message.channel.id != CANAL_ID:
+
+    canal = CANAIS.get(message.channel.id)
+    if not canal:
         return
-    
-    # Só responde se começar com o prefixo !
+
     if not message.content.startswith(PREFIXO):
         return
-    
-    # Remove o prefixo e pega a pergunta
+
     pergunta = message.content[len(PREFIXO):].strip()
     if not pergunta:
         await message.channel.send("❓ Digite uma pergunta após o `!`. Ex: `!O que é a Auvo?`")
         return
-    
-    # Avisa que está processando
+
     await message.channel.send("⏳ Consultando a base de conhecimento...")
-    
-    # Envia para o n8n
+
     try:
         async with aiohttp.ClientSession() as session:
             payload = {
@@ -50,16 +57,16 @@ async def on_message(message):
                     "pergunta": pergunta
                 }
             }
-            
-            async with session.post(N8N_WEBHOOK_URL, json=payload, timeout=30) as resp:
+
+            async with session.post(canal["n8n"], json=payload, timeout=30) as resp:
                 if resp.status == 200:
-                    print(f"✅ Pergunta enviada ao n8n: {pergunta}")
+                    print(f"✅ [{canal['nome']}] Pergunta enviada: {pergunta}")
                 else:
                     await message.channel.send("⚠️ Erro ao consultar a base. Tente novamente.")
-                    print(f"❌ Erro n8n: {resp.status} - {await resp.text()}")
-                    
+                    print(f"❌ [{canal['nome']}] Erro n8n: {resp.status} - {await resp.text()}")
+
     except Exception as e:
         await message.channel.send("⚠️ Erro de conexão. Tente novamente.")
-        print(f"❌ Exceção: {e}")
+        print(f"❌ [{canal['nome']}] Exceção: {e}")
 
 client.run(DISCORD_TOKEN)
