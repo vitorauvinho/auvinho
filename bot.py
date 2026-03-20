@@ -7,7 +7,7 @@ PREFIXO = "!"
 
 CANAIS = {
     1341388033584267319: {
-        "n8n": os.getenv("WEBHOOK_N8N_FINANCEIRO", "https://vitorpomodoro.app.n8n.cloud/webhook/auvo-bot"),
+        "n8n": os.getenv("WEBHOOK_N8N_FINANCEIRO", "https://vitorpomodoro.app.n8n.cloud/webhook/financeiro"),
         "discord": "https://discord.com/api/webhooks/1481657595667415274/q_U8HYZNJUS59KFG05YGls1xY9oISEKuQfHe1o6NoTYGk-uZxwhCT-3dlT65cJjdFj_B",
         "nome": "financeiro"
     },
